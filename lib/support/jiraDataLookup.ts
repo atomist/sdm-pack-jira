@@ -1,12 +1,16 @@
 import {
-    configurationValue, HandlerContext,
+    configurationValue,
+    HandlerContext,
     HttpClientFactory,
     HttpMethod,
     logger,
 } from "@atomist/automation-client";
-import {SdmContext} from "@atomist/sdm";
-import {getJiraAuth, JiraConfig} from "../jira";
-import {JiraCache} from "./cache/jiraCache";
+import { SdmContext } from "@atomist/sdm";
+import {
+    getJiraAuth,
+    JiraConfig,
+} from "../jira";
+import { JiraCache } from "./cache/jiraCache";
 
 /**
  * This function retrieves details from JIRA.  You must supply the full "self"

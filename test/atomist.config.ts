@@ -43,10 +43,13 @@ import {
 import { onJiraIssueEventApproval } from "../lib/event/onJiraIssueEventApproval";
 import { JiraApproval } from "../lib/goals/JiraApproval";
 import { jiraSupport } from "../lib/jira";
-import {getJiraStats} from "../lib/support/cache/manage";
-import {jiraCacheProcessor} from "../lib/support/cache/postProcessor";
-import {createBugIssueReg} from "../lib/support/commands/createBugIssue";
-import {jiraCreateProjectBranchReg, jiraFindAndAssignReg} from "../lib/support/commands/findAndAssign";
+import { getJiraStats } from "../lib/support/cache/manage";
+import { jiraCacheProcessor } from "../lib/support/cache/postProcessor";
+import { createBugIssueReg } from "../lib/support/commands/createBugIssue";
+import {
+    jiraCreateProjectBranchReg,
+    jiraFindAndAssignReg,
+} from "../lib/support/commands/findAndAssign";
 
 export function machineMaker(config: SoftwareDeliveryMachineConfiguration): SoftwareDeliveryMachine {
 

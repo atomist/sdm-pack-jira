@@ -1,6 +1,6 @@
-import {configurationValue} from "@atomist/automation-client";
-import {JiraConfig} from "../jira";
-import {getJiraDetails} from "./jiraDataLookup";
+import { configurationValue } from "@atomist/automation-client";
+import { JiraConfig } from "../jira";
+import { getJiraDetails } from "./jiraDataLookup";
 import * as jiraTypes from "./jiraDefs";
 
 export async function convertEmailtoJiraUser(address: string): Promise<string> {

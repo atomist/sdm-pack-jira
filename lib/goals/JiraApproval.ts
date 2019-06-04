@@ -1,9 +1,14 @@
-import {configurationValue} from "@atomist/automation-client";
-import { GoalWithFulfillment, IndependentOfEnvironment, SdmGoalState, slackErrorMessage } from "@atomist/sdm";
+import { configurationValue } from "@atomist/automation-client";
+import {
+    GoalWithFulfillment,
+    IndependentOfEnvironment,
+    SdmGoalState,
+    slackErrorMessage,
+} from "@atomist/sdm";
 import { readSdmVersion } from "@atomist/sdm-core";
-import {JiraConfig} from "../jira";
-import {createJiraTicket} from "../support/commands/shared";
-import {convertEmailtoJiraUser} from "../support/shared";
+import { JiraConfig } from "../jira";
+import { createJiraTicket } from "../support/commands/shared";
+import { convertEmailtoJiraUser } from "../support/shared";
 
 /**
  * The JIRA Approval goal allows you to insert an approval goal into a goal set.  The workflow is that when the goal

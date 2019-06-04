@@ -1,10 +1,26 @@
-import {configurationValue, HandlerResult, logger, Parameter, Parameters} from "@atomist/automation-client";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackErrorMessage, slackSuccessMessage} from "@atomist/sdm";
+import {
+    configurationValue,
+    HandlerResult,
+    logger,
+    Parameter,
+    Parameters,
+} from "@atomist/automation-client";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackErrorMessage,
+    slackSuccessMessage,
+} from "@atomist/sdm";
 import * as objectHash from "object-hash";
-import {JiraConfig} from "../../jira";
-import {getJiraDetails} from "../jiraDataLookup";
-import {Component} from "../jiraDefs";
-import {JiraHandlerParam, prepComponentSelect, prepProjectSelect, submitMappingPayload} from "./shared";
+import { JiraConfig } from "../../jira";
+import { getJiraDetails } from "../jiraDataLookup";
+import { Component } from "../jiraDefs";
+import {
+    JiraHandlerParam,
+    prepComponentSelect,
+    prepProjectSelect,
+    submitMappingPayload,
+} from "./shared";
 
 @Parameters()
 class MapComponentToChannelParams extends JiraHandlerParam {

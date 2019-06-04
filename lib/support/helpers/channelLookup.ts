@@ -1,9 +1,20 @@
-import {configurationValue, HandlerContext, logger, QueryNoCacheOptions} from "@atomist/automation-client";
+import {
+    configurationValue,
+    HandlerContext,
+    logger,
+    QueryNoCacheOptions,
+} from "@atomist/automation-client";
 import _ = require("lodash");
 import * as types from "../../typings/types";
-import {cachedJiraMappingLookup, JiraPreference} from "../cache/lookup";
+import {
+    cachedJiraMappingLookup,
+    JiraPreference,
+} from "../cache/lookup";
 import { queryJiraChannelPrefs } from "../commands/configureChannelPrefs";
-import {getJiraDetails, getJiraIssueRepos} from "../jiraDataLookup";
+import {
+    getJiraDetails,
+    getJiraIssueRepos,
+} from "../jiraDataLookup";
 import * as jiraTypes from "../jiraDefs";
 
 /**

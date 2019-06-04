@@ -1,10 +1,25 @@
-import {configurationValue, HandlerResult, logger, Parameter, Parameters} from "@atomist/automation-client";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackErrorMessage, slackSuccessMessage} from "@atomist/sdm";
+import {
+    configurationValue,
+    HandlerResult,
+    logger,
+    Parameter,
+    Parameters,
+} from "@atomist/automation-client";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackErrorMessage,
+    slackSuccessMessage,
+} from "@atomist/sdm";
 import objectHash = require("object-hash");
-import {JiraConfig} from "../../jira";
-import {getJiraDetails} from "../jiraDataLookup";
-import {Project} from "../jiraDefs";
-import {JiraHandlerParam, prepProjectSelect, submitMappingPayload} from "./shared";
+import { JiraConfig } from "../../jira";
+import { getJiraDetails } from "../jiraDataLookup";
+import { Project } from "../jiraDefs";
+import {
+    JiraHandlerParam,
+    prepProjectSelect,
+    submitMappingPayload,
+} from "./shared";
 
 @Parameters()
 class MapProjectToChannelParams extends JiraHandlerParam {

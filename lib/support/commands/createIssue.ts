@@ -1,14 +1,30 @@
-import {configurationValue, HandlerResult, logger, MappedParameter, MappedParameters, Parameter, Parameters} from "@atomist/automation-client";
-import {Option} from "@atomist/automation-client/lib/metadata/automationMetadata";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackErrorMessage} from "@atomist/sdm";
+import {
+    configurationValue,
+    HandlerResult,
+    logger,
+    MappedParameter,
+    MappedParameters,
+    Parameter,
+    Parameters,
+} from "@atomist/automation-client";
+import { Option } from "@atomist/automation-client/lib/metadata/automationMetadata";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackErrorMessage,
+} from "@atomist/sdm";
 import * as slack from "@atomist/slack-messages";
 import * as jira2slack from "jira2slack";
-import {JiraConfig} from "../../jira";
+import { JiraConfig } from "../../jira";
 import * as types from "../../typings/types";
-import {getJiraDetails} from "../jiraDataLookup";
+import { getJiraDetails } from "../jiraDataLookup";
 import * as jiraTypes from "../jiraDefs";
-import {convertEmailtoJiraUser} from "../shared";
-import {createJiraTicket, JiraHandlerParam, prepProjectSelect} from "./shared";
+import { convertEmailtoJiraUser } from "../shared";
+import {
+    createJiraTicket,
+    JiraHandlerParam,
+    prepProjectSelect,
+} from "./shared";
 
 @Parameters()
 class JiraProjectLookup extends JiraHandlerParam {

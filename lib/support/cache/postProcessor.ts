@@ -16,8 +16,11 @@
  * @param {Configuration} config sdm configuration
  * @returns {Configuration} config
  */
-import {Configuration} from "@atomist/automation-client";
-import {flushCache, getStats} from "./manage";
+import { Configuration } from "@atomist/automation-client";
+import {
+    flushCache,
+    getStats,
+} from "./manage";
 
 export const jiraCacheProcessor = async (config: Configuration) => {
     config.http.customizers.push(

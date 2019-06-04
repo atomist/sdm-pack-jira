@@ -1,7 +1,13 @@
-import {configurationValue, GraphQL, logger, OnEvent, Success} from "@atomist/automation-client";
+import {
+    configurationValue,
+    GraphQL,
+    logger,
+    OnEvent,
+    Success,
+} from "@atomist/automation-client";
 import { EventHandlerRegistration } from "@atomist/sdm";
-import {JiraConfig} from "../jira";
-import {purgeCacheEntry} from "../support/cache/manage";
+import { JiraConfig } from "../jira";
+import { purgeCacheEntry } from "../support/cache/manage";
 import * as types from "../typings/types";
 
 /**

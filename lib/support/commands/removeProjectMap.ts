@@ -1,12 +1,23 @@
-import {configurationValue, HandlerResult, logger} from "@atomist/automation-client";
-import {Option} from "@atomist/automation-client/lib/metadata/automationMetadata";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackSuccessMessage} from "@atomist/sdm";
-import {JiraConfig} from "../../jira";
-import {getMappedProjectsbyChannel} from "../helpers/channelLookup";
-import {getJiraDetails} from "../jiraDataLookup";
-import {Project} from "../jiraDefs";
-import {lookupJiraProjectDetails} from "./getCurrentChannelMappings";
-import {JiraHandlerParam, submitMappingPayload} from "./shared";
+import {
+    configurationValue,
+    HandlerResult,
+    logger,
+} from "@atomist/automation-client";
+import { Option } from "@atomist/automation-client/lib/metadata/automationMetadata";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackSuccessMessage,
+} from "@atomist/sdm";
+import { JiraConfig } from "../../jira";
+import { getMappedProjectsbyChannel } from "../helpers/channelLookup";
+import { getJiraDetails } from "../jiraDataLookup";
+import { Project } from "../jiraDefs";
+import { lookupJiraProjectDetails } from "./getCurrentChannelMappings";
+import {
+    JiraHandlerParam,
+    submitMappingPayload,
+} from "./shared";
 
 export function removeProjectMapFromChannel(ci: CommandListenerInvocation<JiraHandlerParam>): Promise<HandlerResult> {
     return new Promise<HandlerResult>(async (resolve, reject) => {

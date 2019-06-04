@@ -1,6 +1,20 @@
-import {configurationValue, Failure, HandlerResult, logger, NoParameters, Success} from "@atomist/automation-client";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackSuccessMessage} from "@atomist/sdm";
-import {JiraCache, JiraCacheStats} from "./jiraCache";
+import {
+    configurationValue,
+    Failure,
+    HandlerResult,
+    logger,
+    NoParameters,
+    Success,
+} from "@atomist/automation-client";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackSuccessMessage,
+} from "@atomist/sdm";
+import {
+    JiraCache,
+    JiraCacheStats,
+} from "./jiraCache";
 
 // TODO: Turn cache into abstract class
 /**

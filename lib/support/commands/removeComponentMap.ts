@@ -1,13 +1,28 @@
-import {configurationValue, HandlerResult, logger} from "@atomist/automation-client";
-import {Option} from "@atomist/automation-client/lib/metadata/automationMetadata";
-import {CommandHandlerRegistration, CommandListenerInvocation, slackSuccessMessage} from "@atomist/sdm";
+import {
+    configurationValue,
+    HandlerResult,
+    logger,
+} from "@atomist/automation-client";
+import { Option } from "@atomist/automation-client/lib/metadata/automationMetadata";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackSuccessMessage,
+} from "@atomist/sdm";
 import * as objectHash from "object-hash";
-import {JiraConfig} from "../../jira";
-import {getMappedComponentsbyChannel} from "../helpers/channelLookup";
-import {getJiraDetails} from "../jiraDataLookup";
-import {Component} from "../jiraDefs";
-import {findRequiredProjects, lookupJiraProjectDetails} from "./getCurrentChannelMappings";
-import {buildJiraHashKey, JiraHandlerParam, submitMappingPayload} from "./shared";
+import { JiraConfig } from "../../jira";
+import { getMappedComponentsbyChannel } from "../helpers/channelLookup";
+import { getJiraDetails } from "../jiraDataLookup";
+import { Component } from "../jiraDefs";
+import {
+    findRequiredProjects,
+    lookupJiraProjectDetails,
+} from "./getCurrentChannelMappings";
+import {
+    buildJiraHashKey,
+    JiraHandlerParam,
+    submitMappingPayload,
+} from "./shared";
 
 export function removeComponentMapFromChannel(ci: CommandListenerInvocation<JiraHandlerParam>): Promise<HandlerResult> {
     return new Promise(async (resolve, reject) => {

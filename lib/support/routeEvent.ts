@@ -9,10 +9,13 @@ import {
 } from "@atomist/automation-client";
 import * as slack from "@atomist/slack-messages";
 import _ = require("lodash");
-import {JiraConfig} from "../jira";
+import { JiraConfig } from "../jira";
 import * as types from "../typings/types";
-import {JiraPreference} from "./cache/lookup";
-import {jiraDetermineNotifyChannels, jiraParseChannels} from "./helpers/channelLookup";
+import { JiraPreference } from "./cache/lookup";
+import {
+    jiraDetermineNotifyChannels,
+    jiraParseChannels,
+} from "./helpers/channelLookup";
 import {
     buildJiraFooter,
     prepareIssueCommentedMessage,
@@ -20,7 +23,7 @@ import {
     prepareNewIssueMessage,
     prepareStateChangeMessage,
 } from "./helpers/msgHelpers";
-import {getJiraDetails} from "./jiraDataLookup";
+import { getJiraDetails } from "./jiraDataLookup";
 import * as jiraTypes from "./jiraDefs";
 
 /**

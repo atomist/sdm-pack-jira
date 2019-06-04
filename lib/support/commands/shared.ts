@@ -1,6 +1,7 @@
 import {
     addressEvent,
-    configurationValue, HandlerContext,
+    configurationValue,
+    HandlerContext,
     HttpClientFactory,
     HttpMethod,
     logger,
@@ -8,14 +9,24 @@ import {
     MappedParameters,
     Parameters,
 } from "@atomist/automation-client";
-import {Option} from "@atomist/automation-client/lib/metadata/automationMetadata";
-import {CommandListenerInvocation, PreferenceStoreFactory, SdmContext} from "@atomist/sdm";
+import { Option } from "@atomist/automation-client/lib/metadata/automationMetadata";
+import {
+    CommandListenerInvocation,
+    PreferenceStoreFactory,
+    SdmContext,
+} from "@atomist/sdm";
 import * as objectHash from "object-hash";
-import {getJiraAuth, JiraConfig} from "../../jira";
-import {JiraPreference} from "../cache/lookup";
-import {purgeCacheEntry} from "../cache/manage";
-import {getJiraDetails} from "../jiraDataLookup";
-import {Issue, Project} from "../jiraDefs";
+import {
+    getJiraAuth,
+    JiraConfig,
+} from "../../jira";
+import { JiraPreference } from "../cache/lookup";
+import { purgeCacheEntry } from "../cache/manage";
+import { getJiraDetails } from "../jiraDataLookup";
+import {
+    Issue,
+    Project,
+} from "../jiraDefs";
 
 @Parameters()
 export class JiraHandlerParam {

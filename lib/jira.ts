@@ -1,17 +1,31 @@
-import {configurationValue, GraphQL, logger} from "@atomist/automation-client";
-import {ExtensionPack, metadata, SdmContext} from "@atomist/sdm";
+import {
+    configurationValue,
+    GraphQL,
+    logger,
+} from "@atomist/automation-client";
+import {
+    ExtensionPack,
+    metadata,
+    SdmContext,
+} from "@atomist/sdm";
 import { onJiraIssueEvent } from "./event/onJiraIssueEvent";
-import {onJiraIssueEventCache} from "./event/onJiraIssueEventCache";
-import {JiraCache} from "./support/cache/jiraCache";
-import {JiraNodeCache} from "./support/cache/jiraNodeCache";
-import { getJiraChannelPrefsReg, setJiraChannelPrefsReg } from "./support/commands/configureChannelPrefs";
-import {createIssueReg} from "./support/commands/createIssue";
+import { onJiraIssueEventCache } from "./event/onJiraIssueEventCache";
+import { JiraCache } from "./support/cache/jiraCache";
+import { JiraNodeCache } from "./support/cache/jiraNodeCache";
+import {
+    getJiraChannelPrefsReg,
+    setJiraChannelPrefsReg,
+} from "./support/commands/configureChannelPrefs";
+import { createIssueReg } from "./support/commands/createIssue";
 import { getCurrentChannelMappingsReg } from "./support/commands/getCurrentChannelMappings";
-import {mapComponentToChannelReg} from "./support/commands/mapComponent";
-import {mapProjectToChannelReg} from "./support/commands/mapProject";
-import {removeComponentMapFromChannelReg} from "./support/commands/removeComponentMap";
-import {removeProjectMapFromChannelReg} from "./support/commands/removeProjectMap";
-import {commentOnIssue, setIssueStatus} from "./support/helpers/issueActions";
+import { mapComponentToChannelReg } from "./support/commands/mapComponent";
+import { mapProjectToChannelReg } from "./support/commands/mapProject";
+import { removeComponentMapFromChannelReg } from "./support/commands/removeComponentMap";
+import { removeProjectMapFromChannelReg } from "./support/commands/removeProjectMap";
+import {
+    commentOnIssue,
+    setIssueStatus,
+} from "./support/helpers/issueActions";
 
 /**
  * This type represents the function used to retrieve credentials that are returned as an HTTP Authorization Header

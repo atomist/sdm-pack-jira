@@ -1,7 +1,14 @@
-import {configurationValue, HandlerContext, logger } from "@atomist/automation-client";
-import {PreferenceStoreFactory} from "@atomist/sdm";
-import {buildJiraHashKey, JiraMapping} from "../commands/shared";
-import {JiraCache} from "./jiraCache";
+import {
+    configurationValue,
+    HandlerContext,
+    logger,
+} from "@atomist/automation-client";
+import { PreferenceStoreFactory } from "@atomist/sdm";
+import {
+    buildJiraHashKey,
+    JiraMapping,
+} from "../commands/shared";
+import { JiraCache } from "./jiraCache";
 
 export interface JiraPreference {
     channel: string;

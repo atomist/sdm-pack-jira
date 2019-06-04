@@ -3,16 +3,25 @@ import {
     HandlerResult,
     HttpClientFactory,
     HttpMethod,
-    logger, MappedParameter,
+    logger,
+    MappedParameter,
     MappedParameters,
     Parameter,
     Parameters,
 } from "@atomist/automation-client";
-import {CommandHandlerRegistration, CommandListenerInvocation, ParametersDefinition, slackErrorMessage} from "@atomist/sdm";
-import {getJiraAuth, JiraConfig} from "../../jira";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    ParametersDefinition,
+    slackErrorMessage,
+} from "@atomist/sdm";
+import {
+    getJiraAuth,
+    JiraConfig,
+} from "../../jira";
 import * as types from "../../typings/types";
-import {createJiraResource} from "../commands/shared";
-import {convertEmailtoJiraUser} from "../shared";
+import { createJiraResource } from "../commands/shared";
+import { convertEmailtoJiraUser } from "../shared";
 
 @Parameters()
 export class CommentOnIssueParams {

@@ -3,23 +3,36 @@ import {
     configurationValue,
     HandlerResult,
     logger,
-    MappedParameters, QueryNoCacheOptions,
+    MappedParameters,
+    QueryNoCacheOptions,
 } from "@atomist/automation-client";
-import {Option} from "@atomist/automation-client/lib/metadata/automationMetadata";
+import { Option } from "@atomist/automation-client/lib/metadata/automationMetadata";
 import {
     CommandHandlerRegistration,
-    CommandListenerInvocation, CredentialsResolver,
+    CommandListenerInvocation,
+    CredentialsResolver,
     DeclarationType,
     ParametersDefinition,
-    ProjectLoader, RepoRefResolver,
-    resolveCredentialsPromise, SdmContext, slackErrorMessage,
+    ProjectLoader,
+    RepoRefResolver,
+    resolveCredentialsPromise,
+    SdmContext,
+    slackErrorMessage,
     slackSuccessMessage,
 } from "@atomist/sdm";
-import {SlackMessage, url} from "@atomist/slack-messages";
-import {JiraConfig} from "../../jira";
+import {
+    SlackMessage,
+    url,
+} from "@atomist/slack-messages";
+import { JiraConfig } from "../../jira";
 import * as types from "../../typings/types";
-import {convertEmailtoJiraUser} from "../shared";
-import {createJiraResource, JiraQueryLanguageIssueResults, prepProjectSelect, searchIssues} from "./shared";
+import { convertEmailtoJiraUser } from "../shared";
+import {
+    createJiraResource,
+    JiraQueryLanguageIssueResults,
+    prepProjectSelect,
+    searchIssues,
+} from "./shared";
 
 const JiraCreateBranchParams: ParametersDefinition = {
     repoRefResolver: {

@@ -1,5 +1,8 @@
 import NodeCache = require("node-cache");
-import {JiraCache, JiraCacheStats} from "./jiraCache";
+import {
+    JiraCache,
+    JiraCacheStats,
+} from "./jiraCache";
 
 export class JiraNodeCache implements JiraCache {
     private readonly cache: NodeCache;

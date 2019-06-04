@@ -1,8 +1,11 @@
-import {configurationValue, logger} from "@atomist/automation-client";
+import {
+    configurationValue,
+    logger,
+} from "@atomist/automation-client";
 import * as slack from "@atomist/slack-messages";
 import jira2slack = require("jira2slack");
 import { JiraConfig } from "../../jira";
-import {OnJiraIssueEvent} from "../../typings/types";
+import { OnJiraIssueEvent } from "../../typings/types";
 import { getJiraDetails } from "../jiraDataLookup";
 import * as jiraTypes from "../jiraDefs";
 

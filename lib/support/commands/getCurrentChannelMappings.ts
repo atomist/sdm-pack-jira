@@ -1,18 +1,28 @@
 import {
     buttonForCommand,
-    configurationValue, HandlerContext,
+    configurationValue,
+    HandlerContext,
     HandlerResult,
     logger,
     MappedParameter,
     MappedParameters,
     Parameters,
 } from "@atomist/automation-client";
-import {CommandHandlerRegistration, CommandListenerInvocation, SdmContext, slackTs} from "@atomist/sdm";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    SdmContext,
+    slackTs,
+} from "@atomist/sdm";
 import * as slack from "@atomist/slack-messages";
 import { JiraConfig } from "../../jira";
-import { getMappedComponentsbyChannel, getMappedProjectsbyChannel, JiraProjectComponentMap } from "../helpers/channelLookup";
+import {
+    getMappedComponentsbyChannel,
+    getMappedProjectsbyChannel,
+    JiraProjectComponentMap,
+} from "../helpers/channelLookup";
 import { getJiraDetails } from "../jiraDataLookup";
-import {Project} from "../jiraDefs";
+import { Project } from "../jiraDefs";
 
 @Parameters()
 class JiraGetCurrentChannelMappingsParams {

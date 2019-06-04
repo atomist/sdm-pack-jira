@@ -1,5 +1,18 @@
-import { configurationValue, GitHubRepoRef, GraphQL, logger, OnEvent, Success } from "@atomist/automation-client";
-import { EventHandlerRegistration, findSdmGoalOnCommit, Goal, SdmGoalState, updateGoal } from "@atomist/sdm";
+import {
+    configurationValue,
+    GitHubRepoRef,
+    GraphQL,
+    logger,
+    OnEvent,
+    Success,
+} from "@atomist/automation-client";
+import {
+    EventHandlerRegistration,
+    findSdmGoalOnCommit,
+    Goal,
+    SdmGoalState,
+    updateGoal,
+} from "@atomist/sdm";
 import { JiraConfig } from "../jira";
 import { getJiraDetails } from "../support/jiraDataLookup";
 import * as jiraTypes from "../support/jiraDefs";

@@ -1,6 +1,12 @@
-import {GraphQL, logger, OnEvent, QueryNoCacheOptions, Success} from "@atomist/automation-client";
+import {
+    GraphQL,
+    logger,
+    OnEvent,
+    QueryNoCacheOptions,
+    Success,
+} from "@atomist/automation-client";
 import { EventHandlerRegistration } from "@atomist/sdm";
-import {purgeCacheEntry} from "../support/cache/manage";
+import { purgeCacheEntry } from "../support/cache/manage";
 import { routeEvent } from "../support/routeEvent";
 import * as types from "../typings/types";
 

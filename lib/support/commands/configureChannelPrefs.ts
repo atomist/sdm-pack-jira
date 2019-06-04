@@ -2,18 +2,28 @@ import {
     addressEvent,
     buttonForCommand,
     HandlerContext,
-    HandlerResult, logger,
+    HandlerResult,
+    logger,
     MappedParameter,
     MappedParameters,
     Parameter,
     Parameters,
 } from "@atomist/automation-client";
-import { CommandHandlerRegistration, CommandListenerInvocation, slackSuccessMessage, slackTs } from "@atomist/sdm";
-import {SlackMessage} from "@atomist/slack-messages";
+import {
+    CommandHandlerRegistration,
+    CommandListenerInvocation,
+    slackSuccessMessage,
+    slackTs,
+} from "@atomist/sdm";
+import { SlackMessage } from "@atomist/slack-messages";
 import * as objectHash from "object-hash";
 import * as types from "../../typings/types";
-import {cachedJiraMappingLookup, cachedJiraPreferenceLookup, JiraPreference} from "../cache/lookup";
-import {purgeCacheEntry} from "../cache/manage";
+import {
+    cachedJiraMappingLookup,
+    cachedJiraPreferenceLookup,
+    JiraPreference,
+} from "../cache/lookup";
+import { purgeCacheEntry } from "../cache/manage";
 
 @Parameters()
 class JiraChannelPrefsBase {
