@@ -1,21 +1,19 @@
-/**
- * Post-processor that creates a customizer which exposes a /jiracache endpoint on the SDM that can be used to view cache stats,
- * or optionally flush the case
+/*
+ * Copyright © 2019 Atomist, Inc.
  *
- * Endpoints:
- *  /jiracache (GET)
- *      - Returns an object with the cache statistics (node-cache)
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  /jiracache/purge (POST)
- *      - Flush the cache
- *      - Must send authentication
- *          * {"auth": "<the API key in your SDM configuration>"}
- *      - Returns
- *          * {success: boolean, [error: string]}
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * @param {Configuration} config sdm configuration
- * @returns {Configuration} config
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 import { Configuration } from "@atomist/automation-client";
 import {
     flushCache,
