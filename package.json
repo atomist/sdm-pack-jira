@@ -1,16 +1,20 @@
 {
-  "name": "@ipcrmdemo/sdm-pack-jira",
+  "name": "@atomist/sdm-pack-jira",
   "version": "0.0.1",
   "description": "SDM Pack for JIRA",
-  "author": "ipcrm",
+  "author": {
+      "name": "Atomist",
+      "email": "support@atomist.com",
+      "url": "https://atomist.com/"
+  },
   "license": "Apache-2.0",
-  "homepage": "https://github.com/ipcrmdemo/sdm-pack-jira#readme",
+  "homepage": "https://github.com/atomist/sdm-pack-jira#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ipcrmdemo/sdm-pack-jira.git"
+    "url": "https://github.com/atomist/sdm-pack-jira.git"
   },
   "bugs": {
-    "url": "https://github.com/ipcrmdemo/sdm-pack-jira/issues"
+    "url": "https://github.com/atomist/sdm-pack-jira/issues"
   },
   "keywords": [
     "atomist",
