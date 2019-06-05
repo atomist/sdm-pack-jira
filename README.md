@@ -4,6 +4,7 @@
 
 # @atomist/sdm-pack-jira
 [![atomist sdm goals](https://badge.atomist.com/T29E48P34/atomist/sdm-pack-jira/dbc6d7f1-931b-48e3-a59c-848bf516b44d)](https://app.atomist.com/workspace/T29E48P34)
+[![npm version](https://img.shields.io/npm/v/@atomist/sdm-pack-jira.svg)](https://www.npmjs.com/package/@atomist/sdm-pack-jira)
 
 To add support for JIRA to your SDM install this pack into your package.json and add the following to your `machine.ts` file:
 
