@@ -63,48 +63,9 @@ export const routeEvent = async (
 
     const jiraConfig = configurationValue<JiraConfig>("sdm.jira");
     const issueDetail = await getJiraDetails<jiraTypes.Issue>(event.issue.self + "?expand=changelog", true, 30);
-    let issueTransitions: jiraTypes.JiraIssueTransitions;
-    let msgOptions: MessageOptions;
 
     // Set a description and provide a static (and reproducible) message id
-    let description: string;
-    switch (event.webhookEvent) {
-        case("comment_created"):
-        case("jira:issue_updated"): {
-            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
-            description = `JIRA Issue updated ` + slack.url(
-                `${jiraConfig.url}/browse/${event.issue.key}`,
-                `${event.issue.key}: ${issueDetail.fields.summary}`,
-            );
-            msgOptions = {
-                id: `jira/issue_updated/${event.issue.key}/${event.timestamp}`,
-                post: newEvent ? "always" : "update_only",
-            };
-            break;
-        }
-
-        case("jira:issue_created"): {
-            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
-            description = `JIRA Issue created ` + slack.url(
-                `${jiraConfig.url}/browse/${event.issue.key}`,
-                `${event.issue.key}: ${issueDetail.fields.summary}`,
-            );
-            msgOptions = {
-                id: `jira/issue_created/${event.issue.key}/${event.timestamp}`,
-                post: newEvent ? "always" : "update_only",
-            };
-            break;
-        }
-
-        case("jira:issue_deleted"): {
-            description = slack.url(`${jiraConfig.url}/browse/${event.issue.key}`, `JIRA Issue ${event.issue.key} deleted`);
-            msgOptions = {
-                id: `jira/issue_deleted/${event.issue.key}/${event.timestamp}`,
-                post: newEvent ? "always" : "update_only",
-            };
-            break;
-        }
-    }
+    const {description, issueTransitions, msgOptions} = await getJiraIssueDescription(issueDetail, event, newEvent, jiraConfig);
 
     // Get all the channels to notify
     const channels: JiraPreference[] = [];
@@ -193,3 +154,67 @@ export const routeEvent = async (
         }
     }
 };
+
+/**
+ * This function is used to build the appropriate message description and build the msgOptions to be sent with the Chat message
+ *
+ * @param {jiraTypes.Issue} issueDetail contains all of the data from the JIRA instance about this issue
+ * @param {OnJiraIssueEvent.Issue} event contains the data from the ingested JIRA event
+ * @param {boolean} newEvent determines if the event that we are building a message for is replayed or new
+ * @param {JiraConfig} jiraConfig
+ * @returns {description: string, issueTransitions: jiraTypes.JiraIssueTransitions, msgOptions: MessageOptions}
+ */
+export async function getJiraIssueDescription(
+    issueDetail: jiraTypes.Issue,
+    event: types.OnJiraIssueEvent.JiraIssue,
+    newEvent: boolean,
+    jiraConfig: JiraConfig,
+): Promise<{description: string, issueTransitions: jiraTypes.JiraIssueTransitions, msgOptions: MessageOptions}> {
+    let description: string;
+    let issueTransitions: jiraTypes.JiraIssueTransitions;
+    let msgOptions: MessageOptions;
+
+    switch (event.webhookEvent) {
+        case("comment_created"):
+        case("jira:issue_updated"): {
+            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
+            description = `JIRA Issue updated ` + slack.url(
+                `${jiraConfig.url}/browse/${event.issue.key}`,
+                `${event.issue.key}: ${issueDetail.fields.summary}`,
+            );
+            msgOptions = {
+                id: `jira/issue_updated/${event.issue.key}/${event.timestamp}`,
+                post: newEvent ? "always" : "update_only",
+            };
+            break;
+        }
+
+        case("jira:issue_created"): {
+            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
+            description = `JIRA Issue created ` + slack.url(
+                `${jiraConfig.url}/browse/${event.issue.key}`,
+                `${event.issue.key}: ${issueDetail.fields.summary}`,
+            );
+            msgOptions = {
+                id: `jira/issue_created/${event.issue.key}/${event.timestamp}`,
+                post: newEvent ? "always" : "update_only",
+            };
+            break;
+        }
+
+        case("jira:issue_deleted"): {
+            description = slack.url(`${jiraConfig.url}/browse/${event.issue.key}`, `JIRA Issue ${event.issue.key} deleted`);
+            msgOptions = {
+                id: `jira/issue_deleted/${event.issue.key}/${event.timestamp}`,
+                post: newEvent ? "always" : "update_only",
+            };
+            break;
+        }
+    }
+
+    return {
+        description,
+        issueTransitions,
+        msgOptions,
+    };
+}
