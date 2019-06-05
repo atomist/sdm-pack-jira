@@ -11,7 +11,7 @@ This page details all runtime OSS dependencies of `@atomist/sdm-pack-jira`.
 | License | Count |
 |---------|-------|
 |[AFLv2.1](#aflv21)|1|
-|[Apache-2.0](#apache-20)|21|
+|[Apache-2.0](#apache-20)|20|
 |[BSD-2-Clause](#bsd-2-clause)|10|
 |[BSD-3-Clause](#bsd-3-clause)|21|
 |[BSD](#bsd)|9|
@@ -23,7 +23,7 @@ This page details all runtime OSS dependencies of `@atomist/sdm-pack-jira`.
 |[Custom: http://nodejs.org/](#custom-httpnodejsorg)|1|
 |[Custom: https://flowtype.org/](#custom-httpsflowtypeorg)|1|
 |[Custom: https://github.com/graphql/graphql-language-service](#custom-httpsgithubcomgraphqlgraphql-language-service)|2|
-|[GPL-3.0](#gpl-30)|5|
+|[GPL-3.0](#gpl-30)|3|
 |[ISC](#isc)|69|
 |[MIT AND BSD-3-Clause](#mit-and-bsd-3-clause)|1|
 |[MIT](#mit)|801|
@@ -60,7 +60,6 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 |`rxjs`|`6.5.2`|Ben Lesh|[https://github.com/reactivex/rxjs](https://github.com/reactivex/rxjs)|
 |`tslib`|`1.9.3`|Microsoft Corp.|[https://github.com/Microsoft/tslib](https://github.com/Microsoft/tslib)|
 |`tunnel-agent`|`0.6.0`|Mikeal Rogers|[https://github.com/mikeal/tunnel-agent](https://github.com/mikeal/tunnel-agent)|
-|`typescript`|`3.2.2`|Microsoft Corp.|[https://github.com/Microsoft/TypeScript](https://github.com/Microsoft/TypeScript)|
 |`typescript`|`3.5.1`|Microsoft Corp.|[https://github.com/Microsoft/TypeScript](https://github.com/Microsoft/TypeScript)|
 
 #### BSD
@@ -176,9 +175,7 @@ GNU General Public License v3.0 only - [http://www.gnu.org/licenses/gpl-3.0-stan
 | Name | Version | Publisher | Repository |
 |------|---------|-----------|------------|
 |`@atomist/automation-client`|`1.5.3`|Atomist|[https://github.com/atomist/automation-client](https://github.com/atomist/automation-client)|
-|`@atomist/microgrammar`|`1.0.3`|Atomist|[https://github.com/atomist/microgrammar](https://github.com/atomist/microgrammar)|
 |`@atomist/microgrammar`|`1.2.0`|Atomist|[https://github.com/atomist/microgrammar](https://github.com/atomist/microgrammar)|
-|`@atomist/tree-path`|`1.0.2`|Atomist|[https://github.com/atomist/tree-path](https://github.com/atomist/tree-path)|
 |`@atomist/tree-path`|`1.0.3`|Atomist|[https://github.com/atomist/tree-path](https://github.com/atomist/tree-path)|
 
 #### ISC
