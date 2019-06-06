@@ -32,7 +32,6 @@ import {
     JiraCacheStats,
 } from "./jiraCache";
 
-// TODO: Turn cache into abstract class
 /**
  * Flush Cache is used to complete delete the JIRA Cache.
  *

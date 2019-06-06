@@ -175,7 +175,7 @@ export const prepareNewIssueMessage = async (
                     },
                     {
                         title: "Description",
-                        value: jira2slack.toSlack(issueDetail.fields.description),
+                        value: `${issueDetail.fields.description ? jira2slack.toSlack(issueDetail.fields.description) : ""}`,
                     },
                 ],
             },
