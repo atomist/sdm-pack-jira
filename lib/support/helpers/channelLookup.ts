@@ -81,7 +81,8 @@ export const getMappedComponentsbyChannel = async (
 ): Promise<JiraProjectComponentMap[]> => {
     const components = await cachedJiraMappingLookup(ctx, {channel});
     if (components && components.length > 0) {
-        return components.map<JiraProjectComponentMap>(c => ({componentId: c.componentId, projectId: c.projectId}));
+        return components.map<JiraProjectComponentMap>(
+            c => ({componentId: c.componentId, projectId: c.projectId})).filter(ec => ec.componentId !== undefined);
     } else {
         return [];
     }
