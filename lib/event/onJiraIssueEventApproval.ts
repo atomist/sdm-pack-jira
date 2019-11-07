@@ -32,6 +32,7 @@ import {
 import { JiraConfig } from "../jira";
 import { getJiraDetails } from "../support/jiraDataLookup";
 import * as jiraTypes from "../support/jiraDefs";
+import {buildSelfUrl} from "../support/shared";
 import * as types from "../typings/types";
 
 /**
@@ -49,7 +50,7 @@ export const onJiraIssueEventApprovalHandler = (goal: Goal): OnEvent<types.OnJir
         if (event.issue === null || event.issue.self === null) {
             return Success;
         }
-        const issue = await getJiraDetails<jiraTypes.Issue>(event.issue.self + "?expand=changelog", true, 30);
+        const issue = await getJiraDetails<jiraTypes.Issue>(buildSelfUrl(event.issue.id) + "?expand=changelog", true, 30);
 
         // Validate new state is approved (only process if this issue is a state change)
         if (
@@ -77,7 +78,7 @@ export const onJiraIssueEventApprovalHandler = (goal: Goal): OnEvent<types.OnJir
         }
 
         // Get new status
-        const status = issue.changelog.histories.slice(-1)[0].items.filter(c => c.field === "status");
+        const status = issue.changelog.histories[0].items.filter(c => c.field === "status");
         logger.info(`JIRA onJiraIssueEventApprovalHandler: New status => ${JSON.stringify(status)}`);
         // TODO: Make the 'status' required configuration
         if (status[0].toString === "Done") {
