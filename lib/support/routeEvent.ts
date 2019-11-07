@@ -41,7 +41,7 @@ import {
 } from "./helpers/msgHelpers";
 import { getJiraDetails } from "./jiraDataLookup";
 import * as jiraTypes from "./jiraDefs";
-import { buildSelfUrl } from "./shared";
+import {buildSelfUrl} from "./shared";
 
 /**
  * routeEvent
