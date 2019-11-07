@@ -232,24 +232,19 @@ export const jiraDetermineNotifyChannels = async (
  * @returns {string[]} Array of strings.  The names of the channels.
  */
 export async function findChannelByRepo(ctx: HandlerContext, name: string): Promise<string[]> {
-   return new Promise<string[]>( async (resolve, reject) => {
-       await ctx.graphClient.query<types.GetChannelByRepo.Query, types.GetChannelByRepo.Variables>({
-           name: "GetChannelByRepo",
-           variables: {name},
-           options: QueryNoCacheOptions,
-       })
-           .then(
-                channels => {
-                    logger.debug(`findChannelByRepo: raw result ${JSON.stringify(channels)}`);
-                    resolve(channels.Repo[0].channels.map(c => c.name));
-                },
-            )
-            .catch(
-                e => {
-                    logger.debug(`Failed to lookup channels for repo ${name}! ${e}`);
-                    reject(e);
-            });
-    });
+    try {
+        const result = await ctx.graphClient.query<types.GetChannelByRepo.Query, types.GetChannelByRepo.Variables>({
+            name: "GetChannelByRepo",
+            variables: {name},
+            options: QueryNoCacheOptions,
+        });
+
+        logger.debug(`findChannelByRepo: raw result ${JSON.stringify(result)}`);
+        return result.Repo[0].channels.map(c => c.name);
+    } catch (e) {
+        logger.debug(`Failed to lookup channels for repo ${name}! ${e}`);
+        throw new Error(e);
+    }
 }
 
 /**

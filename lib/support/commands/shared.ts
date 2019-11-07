@@ -75,35 +75,32 @@ export function buildJiraHashKey(workspaceId: string, payload: JiraMapping): str
     return hash;
 }
 
-export function submitMappingPayload(
+export async function submitMappingPayload(
     ci: CommandListenerInvocation<JiraHandlerParam>,
     payload: JiraMapping,
     active: boolean = true,
 ): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-        try {
-            const prefStore = configurationValue<PreferenceStoreFactory>("sdm.preferenceStoreFactory")(ci.context);
-            if (active) {
-                await prefStore.put<JiraMapping>(
-                    buildJiraHashKey(ci.context.workspaceId, payload),
-                    payload,
-                    {scope: "JIRAMappings"},
-                );
-            } else {
-                await prefStore.delete(
-                    buildJiraHashKey(ci.context.workspaceId, payload),
-                    {scope: "JIRAMappings"},
-                );
-            }
-            // Purge cache entry for this payload as well as for channel lookups (which just use the channel in the payload)
-            await purgeCacheEntry(buildJiraHashKey(ci.context.workspaceId, payload));
-            await purgeCacheEntry(buildJiraHashKey(ci.context.workspaceId, {channel: payload.channel, projectId: undefined, componentId: undefined}));
-            resolve();
-        } catch (e) {
-            logger.error(`JIRA submitMappingPayload: Error found => ${e}`);
-            reject(e);
+    try {
+        const prefStore = configurationValue<PreferenceStoreFactory>("sdm.preferenceStoreFactory")(ci.context);
+        if (active) {
+            await prefStore.put<JiraMapping>(
+                buildJiraHashKey(ci.context.workspaceId, payload),
+                payload,
+                {scope: "JIRAMappings"},
+            );
+        } else {
+            await prefStore.delete(
+                buildJiraHashKey(ci.context.workspaceId, payload),
+                {scope: "JIRAMappings"},
+            );
         }
-    });
+        // Purge cache entry for this payload as well as for channel lookups (which just use the channel in the payload)
+        await purgeCacheEntry(buildJiraHashKey(ci.context.workspaceId, payload));
+        await purgeCacheEntry(buildJiraHashKey(ci.context.workspaceId, {channel: payload.channel, projectId: undefined, componentId: undefined}));
+    } catch (e) {
+        logger.error(`JIRA submitMappingPayload: Error found => ${e}`);
+        throw new Error(e);
+    }
 }
 
 export const createJiraTicket = async (data: any, ctx?: SdmContext): Promise<JiraItemCreated> => {
