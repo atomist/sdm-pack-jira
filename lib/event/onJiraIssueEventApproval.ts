@@ -78,7 +78,7 @@ export const onJiraIssueEventApprovalHandler = (goal: Goal): OnEvent<types.OnJir
         }
 
         // Get new status
-        const status = issue.changelog.histories[0].items.filter(c => c.field === "status");
+        const status = issue.changelog.histories[issue.changelog.histories.length - 1].items.filter(c => c.field === "status");
         logger.info(`JIRA onJiraIssueEventApprovalHandler: New status => ${JSON.stringify(status)}`);
         // TODO: Make the 'status' required configuration
         if (status[0].toString === "Done") {
