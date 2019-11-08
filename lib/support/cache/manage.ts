@@ -38,17 +38,14 @@ import {
  * @returns {void}
  */
 export async function flushCache(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        try {
-            const cache = configurationValue<JiraCache>("sdm.jiraCache");
-            cache.flushAll();
-            logger.info(`JIRA flushCache: Successfully purged JIRA cache entries`);
-            resolve();
-        } catch (e) {
-            logger.error(`JIRA flushCache: Failed to purge cache.  Error => ${e}`);
-            reject(e);
-        }
-    });
+    try {
+        const cache = configurationValue<JiraCache>("sdm.jiraCache");
+        cache.flushAll();
+        logger.info(`JIRA flushCache: Successfully purged JIRA cache entries`);
+    } catch (e) {
+        logger.error(`JIRA flushCache: Failed to purge cache.  Error => ${e}`);
+        throw new Error(e);
+    }
 }
 
 /**
@@ -58,32 +55,27 @@ export async function flushCache(): Promise<void> {
  * @returns {void}
  */
 export async function purgeCacheEntry(key: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        try {
-            const cache = configurationValue<JiraCache>("sdm.jiraCache");
-            const deleted = cache.del(key);
-            logger.info(`JIRA purgeCacheEntry: Successfully purged key ${key} from JIRA cache. Deleted ${deleted} entries`);
-            resolve();
-        } catch (e) {
-            logger.error(`JIRA purgeCacheEntry: Failed to purge entry ${key}.  Error => ${e}`);
-            reject(e);
-        }
-    });
+    try {
+        const cache = configurationValue<JiraCache>("sdm.jiraCache");
+        const deleted = cache.del(key);
+        logger.info(`JIRA purgeCacheEntry: Successfully purged key ${key} from JIRA cache. Deleted ${deleted} entries`);
+    } catch (e) {
+        logger.error(`JIRA purgeCacheEntry: Failed to purge entry ${key}.  Error => ${e}`);
+        throw new Error(e);
+    }
 }
 
 /**
  * getStats returns the usage information from the JIRA cache
  */
 export async function getStats(): Promise<JiraCacheStats> {
-    return new Promise<JiraCacheStats>((resolve, reject) => {
-        try {
-            const cache = configurationValue<JiraCache>("sdm.jiraCache");
-            resolve(cache.getStats());
-        } catch (e) {
-            logger.error(`JIRA getStats: Failed to retrieve JIRA cache stats.  Error => ${e}`);
-            reject(e);
-        }
-    });
+    try {
+        const cache = configurationValue<JiraCache>("sdm.jiraCache");
+        return cache.getStats();
+    } catch (e) {
+        logger.error(`JIRA getStats: Failed to retrieve JIRA cache stats.  Error => ${e}`);
+        throw new Error(e);
+    }
 }
 
 export const getJiraStatsHandler = async (cli: CommandListenerInvocation<NoParameters>): Promise<HandlerResult> => {

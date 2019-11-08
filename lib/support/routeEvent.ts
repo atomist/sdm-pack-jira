@@ -41,6 +41,7 @@ import {
 } from "./helpers/msgHelpers";
 import { getJiraDetails } from "./jiraDataLookup";
 import * as jiraTypes from "./jiraDefs";
+import { buildSelfUrl } from "./shared";
 
 /**
  * routeEvent
@@ -60,9 +61,8 @@ export const routeEvent = async (
 ): Promise<void> => {
     // Build one array with all the stuff that we'll convert into a slack message
     const message: slack.Attachment[] = [];
-
     const jiraConfig = configurationValue<JiraConfig>("sdm.jira");
-    const issueDetail = await getJiraDetails<jiraTypes.Issue>(event.issue.self + "?expand=changelog", true, 30);
+    const issueDetail = await getJiraDetails<jiraTypes.Issue>(buildSelfUrl(event.issue.id) + "?expand=changelog", true, 30);
 
     // Set a description and provide a static (and reproducible) message id
     const {description, issueTransitions, msgOptions} = await getJiraIssueDescription(issueDetail, event, newEvent, jiraConfig);
@@ -177,7 +177,7 @@ export async function getJiraIssueDescription(
     switch (event.webhookEvent) {
         case("comment_created"):
         case("jira:issue_updated"): {
-            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
+            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(buildSelfUrl(event.issue.id) + "/transitions", true, 5);
             description = `JIRA Issue updated ` + slack.url(
                 `${jiraConfig.url}/browse/${event.issue.key}`,
                 `${event.issue.key}: ${issueDetail.fields.summary}`,
@@ -190,7 +190,7 @@ export async function getJiraIssueDescription(
         }
 
         case("jira:issue_created"): {
-            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(event.issue.self + "/transitions", true, 5);
+            issueTransitions = await getJiraDetails<jiraTypes.JiraIssueTransitions>(buildSelfUrl(event.issue.id) + "/transitions", true, 5);
             description = `JIRA Issue created ` + slack.url(
                 `${jiraConfig.url}/browse/${event.issue.key}`,
                 `${event.issue.key}: ${issueDetail.fields.summary}`,

@@ -29,3 +29,8 @@ export async function convertEmailtoJiraUser(address: string): Promise<string> {
         return undefined;
     }
 }
+
+export function buildSelfUrl(id: string): string {
+    const jiraConfig = configurationValue<JiraConfig>("sdm.jira");
+    return `${jiraConfig.url}/rest/api/2/issue/${id}`;
+}

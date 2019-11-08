@@ -32,6 +32,7 @@ import {
     getJiraIssueRepos,
 } from "../jiraDataLookup";
 import * as jiraTypes from "../jiraDefs";
+import { buildSelfUrl } from "../shared";
 
 /**
  * Return all channels that are mapped to this project
@@ -121,7 +122,7 @@ export const jiraChannelLookup = async (
     ): Promise<string[]> => {
 
     let projectChannels: string[];
-    const issueDetail = await getJiraDetails<jiraTypes.Issue>(event.issue.self + "?expand=changelog", true, 30);
+    const issueDetail = await getJiraDetails<jiraTypes.Issue>(buildSelfUrl(event.issue.id) + "?expand=changelog", true, 30);
     if (event && event.hasOwnProperty("issue") && event.issue) {
         projectChannels = await getProjectChannels(ctx, issueDetail.fields.project.id);
         logger.debug(`JIRA jiraChannelLookup => project channels ${JSON.stringify(projectChannels)}`);
@@ -177,7 +178,7 @@ export const jiraParseChannels = async (
     event: types.OnJiraIssueEvent.JiraIssue,
     check: string,
 ): Promise<JiraPreference[]> => {
-    const issueDetail = await getJiraDetails<jiraTypes.Issue>(event.issue.self + "?expand=changelog", true, 30);
+    const issueDetail = await getJiraDetails<jiraTypes.Issue>(buildSelfUrl(event.issue.id) + "?expand=changelog", true, 30);
     const notify = channels.map(c => {
         if (
             issueDetail &&
@@ -231,24 +232,19 @@ export const jiraDetermineNotifyChannels = async (
  * @returns {string[]} Array of strings.  The names of the channels.
  */
 export async function findChannelByRepo(ctx: HandlerContext, name: string): Promise<string[]> {
-   return new Promise<string[]>( async (resolve, reject) => {
-       await ctx.graphClient.query<types.GetChannelByRepo.Query, types.GetChannelByRepo.Variables>({
-           name: "GetChannelByRepo",
-           variables: {name},
-           options: QueryNoCacheOptions,
-       })
-           .then(
-                channels => {
-                    logger.debug(`findChannelByRepo: raw result ${JSON.stringify(channels)}`);
-                    resolve(channels.Repo[0].channels.map(c => c.name));
-                },
-            )
-            .catch(
-                e => {
-                    logger.debug(`Failed to lookup channels for repo ${name}! ${e}`);
-                    reject(e);
-            });
-    });
+    try {
+        const result = await ctx.graphClient.query<types.GetChannelByRepo.Query, types.GetChannelByRepo.Variables>({
+            name: "GetChannelByRepo",
+            variables: {name},
+            options: QueryNoCacheOptions,
+        });
+
+        logger.debug(`findChannelByRepo: raw result ${JSON.stringify(result)}`);
+        return result.Repo[0].channels.map(c => c.name);
+    } catch (e) {
+        logger.debug(`Failed to lookup channels for repo ${name}! ${e}`);
+        throw new Error(e);
+    }
 }
 
 /**

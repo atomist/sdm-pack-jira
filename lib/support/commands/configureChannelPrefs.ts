@@ -217,81 +217,76 @@ export const queryJiraChannelPrefs = async (
     return setPrefs;
 };
 
-export function getJiraChannelPrefs(
+export async function getJiraChannelPrefs(
     ci: CommandListenerInvocation<JiraChannelPrefsBase>,
-    ): Promise<HandlerResult> {
-    return new Promise<HandlerResult>(async (resolve, reject) => {
-        try {
-            const prefs = await queryJiraChannelPrefs(ci.context, ci.parameters.slackChannelName);
-            const message: SlackMessage = {
-                attachments: [
-                    {
-                    author_icon: `https://images.atomist.com/rug/issue-open.png`,
-                    author_name: `JIRA Notification Preferences`,
-                    fallback: `JIRA Notification Preferences`,
-                    },
-                    {
-                        fallback: `JIRA Preferences`,
-                        fields: [
-                            {
-                                title: "Issue Created?",
-                                value: prefs.issueCreated.toString(),
-                            },
-                            {
-                                title: "Issue Deleted?",
-                                value: prefs.issueDeleted.toString(),
-                            },
-                            {
-                                title: "New Comments?",
-                                value: prefs.issueComment.toString(),
-                            },
-                            {
-                                title: "Issue Status Change?",
-                                value: prefs.issueStatus.toString(),
-                            },
-                            {
-                                title: "Issue Transitions?",
-                                value: prefs.issueState.toString(),
-                            },
-                            {
-                                title: "Bug Issue Type?",
-                                value: prefs.bug.toString(),
-                            },
-                            {
-                                title: "Task Issue Type?",
-                                value: prefs.task.toString(),
-                            },
-                            {
-                                title: "Epic Issue Type?",
-                                value: prefs.epic.toString(),
-                            },
-                            {
-                                title: "Story Issue Type?",
-                                value: prefs.story.toString(),
-                            },
-                            {
-                                title: "Sub-task Issue Type?",
-                                value: prefs.subtask.toString(),
-                            },
-                        ],
-                        actions: [
-                            buttonForCommand({ text: "Update Preferences"}, "SetJiraChannelPrefs"),
-                        ],
-                        ts: slackTs(),
-                    },
-                ],
-            };
+): Promise<HandlerResult> {
+    try {
+        const prefs = await queryJiraChannelPrefs(ci.context, ci.parameters.slackChannelName);
+        const message: SlackMessage = {
+            attachments: [
+                {
+                author_icon: `https://images.atomist.com/rug/issue-open.png`,
+                author_name: `JIRA Notification Preferences`,
+                fallback: `JIRA Notification Preferences`,
+                },
+                {
+                    fallback: `JIRA Preferences`,
+                    fields: [
+                        {
+                            title: "Issue Created?",
+                            value: prefs.issueCreated.toString(),
+                        },
+                        {
+                            title: "Issue Deleted?",
+                            value: prefs.issueDeleted.toString(),
+                        },
+                        {
+                            title: "New Comments?",
+                            value: prefs.issueComment.toString(),
+                        },
+                        {
+                            title: "Issue Status Change?",
+                            value: prefs.issueStatus.toString(),
+                        },
+                        {
+                            title: "Issue Transitions?",
+                            value: prefs.issueState.toString(),
+                        },
+                        {
+                            title: "Bug Issue Type?",
+                            value: prefs.bug.toString(),
+                        },
+                        {
+                            title: "Task Issue Type?",
+                            value: prefs.task.toString(),
+                        },
+                        {
+                            title: "Epic Issue Type?",
+                            value: prefs.epic.toString(),
+                        },
+                        {
+                            title: "Story Issue Type?",
+                            value: prefs.story.toString(),
+                        },
+                        {
+                            title: "Sub-task Issue Type?",
+                            value: prefs.subtask.toString(),
+                        },
+                    ],
+                    actions: [
+                        buttonForCommand({ text: "Update Preferences"}, "SetJiraChannelPrefs"),
+                    ],
+                    ts: slackTs(),
+                },
+            ],
+        };
 
-            await ci.addressChannels(message);
-            resolve({ code: 0 });
-        } catch (e) {
-            logger.error(`JIRA getJiraChannelPrefs: Failed to lookup channel prefs.  Error => ${e}`);
-            reject({
-                code: 1,
-                message: e,
-            });
-        }
-    });
+        await ci.addressChannels(message);
+        return { code: 0 };
+    } catch (e) {
+        logger.error(`JIRA getJiraChannelPrefs: Failed to lookup channel prefs.  Error => ${e}`);
+        throw new Error(e);
+    }
 }
 
 export const getJiraChannelPrefsReg: CommandHandlerRegistration<JiraChannelPrefsBase> = {

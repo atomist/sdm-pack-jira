@@ -42,40 +42,38 @@ import { JiraCache } from "./cache/jiraCache";
  * @returns {T}
  */
 export async function getJiraDetails<T>(jiraSelfUrl: string, cache: boolean = false, ttl: number = 3600, ctx?: SdmContext): Promise<T> {
-    return new Promise<T>( async (resolve, reject) => {
-        const useCache = configurationValue<boolean>("sdm.jira.useCache", false) && cache;
-        const httpClient = configurationValue<HttpClientFactory>("http.client.factory").create(jiraSelfUrl);
-        const jiraCache = configurationValue<JiraCache>("sdm.jiraCache");
-        const cacheResult = jiraCache.get<T>(jiraSelfUrl);
+    const useCache = configurationValue<boolean>("sdm.jira.useCache", false) && cache;
+    const httpClient = configurationValue<HttpClientFactory>("http.client.factory").create(jiraSelfUrl);
+    const jiraCache = configurationValue<JiraCache>("sdm.jiraCache");
+    const cacheResult = jiraCache.get<T>(jiraSelfUrl);
 
-        if (useCache && cacheResult !== undefined) {
-            logger.debug(`JIRA getJiraDetails => ${jiraSelfUrl}: Cache hit, re-using value...`);
-            resolve(cacheResult);
-        } else {
-            logger.debug(`JIRA getJiraDetails => ${jiraSelfUrl}: Cache ${useCache ? "miss" : "disabled"}, querying...`);
-            try {
-                const result = await httpClient.exchange<T>(
-                    jiraSelfUrl,
-                    {
-                        method: HttpMethod.Get,
-                        headers: {
-                            Accept: "application/json",
-                            ...await getJiraAuth(ctx),
-                        },
+    if (useCache && cacheResult !== undefined) {
+        logger.debug(`JIRA getJiraDetails => ${jiraSelfUrl}: Cache hit, re-using value...`);
+        return cacheResult;
+    } else {
+        logger.debug(`JIRA getJiraDetails => ${jiraSelfUrl}: Cache ${useCache ? "miss" : "disabled"}, querying...`);
+        try {
+            const result = await httpClient.exchange<T>(
+                jiraSelfUrl,
+                {
+                    method: HttpMethod.Get,
+                    headers: {
+                        Accept: "application/json",
+                        ...await getJiraAuth(ctx),
                     },
-                );
+                },
+            );
 
-                if (cache) {
-                    jiraCache.set(jiraSelfUrl, result.body, ttl);
-                }
-                resolve(result.body);
-            } catch (e) {
-                const error = `JIRA getJiraDetails: Failed to retrieve details for ${jiraSelfUrl}, error thrown: ${e}`;
-                logger.error(error);
-                reject(error);
+            if (cache) {
+                jiraCache.set(jiraSelfUrl, result.body, ttl);
             }
+            return result.body;
+        } catch (e) {
+            const error = `JIRA getJiraDetails: Failed to retrieve details for ${jiraSelfUrl}, error thrown: ${e}`;
+            logger.error(error);
+            throw new Error(e);
         }
-    });
+    }
 }
 
 interface JiraRepoDetailLink {
@@ -99,48 +97,40 @@ interface JiraIssueRepo {
  * @returns {string[]} List of repo names
  */
 export async function getJiraIssueRepos(issueId: string): Promise<string[]> {
-    return new Promise<string[]>(async (resolve, reject ) => {
-        const jiraConfig = configurationValue<object>("sdm.jira") as JiraConfig;
-        const lookupUrl =
-            // tslint:disable-next-line:max-line-length
-            `${jiraConfig.url}/rest/dev-status/latest/issue/detail?issueId=${issueId}&applicationType=${jiraConfig.vcstype}&dataType=repository`;
+    const jiraConfig = configurationValue<object>("sdm.jira") as JiraConfig;
+    const lookupUrl =
+        // tslint:disable-next-line:max-line-length
+        `${jiraConfig.url}/rest/dev-status/latest/issue/detail?issueId=${issueId}&applicationType=${jiraConfig.vcstype}&dataType=repository`;
 
-        logger.debug(`JIRA getJiraIssueRepos: using issueID => ${issueId}`);
-        logger.debug(`JIRA getJiraIssueRepos: using lookupUrl => ${JSON.stringify(lookupUrl)}`);
-        const httpClient = configurationValue<HttpClientFactory>("http.client.factory").create(lookupUrl);
-        await httpClient.exchange(
-            lookupUrl,
-            {
-                method: HttpMethod.Get,
-                headers: {
-                    Accept: "application/json",
-                    ...await getJiraAuth(),
-                },
+    logger.debug(`JIRA getJiraIssueRepos: using issueID => ${issueId}`);
+    logger.debug(`JIRA getJiraIssueRepos: using lookupUrl => ${JSON.stringify(lookupUrl)}`);
+    const httpClient = configurationValue<HttpClientFactory>("http.client.factory").create(lookupUrl);
+    const result = await httpClient.exchange(
+        lookupUrl,
+        {
+            method: HttpMethod.Get,
+            headers: {
+                Accept: "application/json",
+                ...await getJiraAuth(),
             },
-        )
-            .then(result => {
-                const repos: string[] = [];
-                const data = result.body as JiraIssueRepo;
-                logger.debug(`JIRA getJiraIssueRepos: ticket detail => ${JSON.stringify(data.detail)}`);
+        },
+    );
+        // .then(result => {
+    const repos: string[] = [];
+    const data = result.body as JiraIssueRepo;
+    logger.debug(`JIRA getJiraIssueRepos: ticket detail => ${JSON.stringify(data.detail)}`);
 
-                if (data.detail && data.detail.length > 0) {
-                    data.detail.forEach(d => {
-                        d.repositories.forEach(r => {
-                            repos.push(r.name);
-                        });
-                    });
-
-                    logger.debug(`JIRA getJiraIssueRepos: Found repos => ${JSON.stringify(repos)}`);
-                    resolve(repos);
-                } else {
-                    logger.warn(`JIRA getJiraIssueRepos: no repos found! IssueId => ${issueId}`);
-                    resolve([]);
-                }
-            })
-            .catch(e => {
-                logger.error(e);
-                reject(e);
+    if (data.detail && data.detail.length > 0) {
+        data.detail.forEach(d => {
+            d.repositories.forEach(r => {
+                repos.push(r.name);
             });
+        });
 
-    });
+        logger.debug(`JIRA getJiraIssueRepos: Found repos => ${JSON.stringify(repos)}`);
+        return repos;
+    } else {
+        logger.warn(`JIRA getJiraIssueRepos: no repos found! IssueId => ${issueId}`);
+        return [];
+    }
 }

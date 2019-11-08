@@ -46,72 +46,68 @@ class MapProjectToChannelParams extends JiraHandlerParam {
     public projectSearch: string;
 }
 
-function mapProjectToChannel(ci: CommandListenerInvocation<MapProjectToChannelParams>): Promise<HandlerResult> {
-    return new Promise<HandlerResult>(async (resolve, reject) => {
-        const jiraConfig = configurationValue<object>("sdm.jira") as JiraConfig;
+async function mapProjectToChannel(ci: CommandListenerInvocation<MapProjectToChannelParams>): Promise<HandlerResult> {
+    const jiraConfig = configurationValue<object>("sdm.jira") as JiraConfig;
 
-        if (ci.parameters.slackChannel === ci.parameters.slackChannelName) {
-            await ci.addressChannels(slackErrorMessage(
-                `Cannot Setup Mapping to Individual Account`,
-                `You cannot setup a jira mapping to your own user, must setup mappings to channels only.`,
-                ci.context,
-            ));
-            resolve({code: 0});
-        }
+    if (ci.parameters.slackChannel === ci.parameters.slackChannelName) {
+        await ci.addressChannels(slackErrorMessage(
+            `Cannot Setup Mapping to Individual Account`,
+            `You cannot setup a jira mapping to your own user, must setup mappings to channels only.`,
+            ci.context,
+        ));
+        return {code: 0};
+    }
 
-        // Present list of projects
-        let project: { project: string };
-        const projectValues = await prepProjectSelect(ci.parameters.projectSearch, ci);
-        if (projectValues) {
-             project = await ci.promptFor<{ project: string }>({
-                project: {
-                    displayName: `Please select a project`,
-                    description: `Please select a project`,
-                    type: {
-                        kind: "single",
-                        options: projectValues,
-                    },
+    // Present list of projects
+    let project: { project: string };
+    const projectValues = await prepProjectSelect(ci.parameters.projectSearch, ci);
+    if (projectValues) {
+         project = await ci.promptFor<{ project: string }>({
+            project: {
+                displayName: `Please select a project`,
+                description: `Please select a project`,
+                type: {
+                    kind: "single",
+                    options: projectValues,
                 },
-            });
-        } else {
-            await ci.addressChannels(slackErrorMessage(
-                `Error: No projects found with search term [${ci.parameters.projectSearch}]`,
-                `Please try this command again`,
-                ci.context,
-            ));
-            resolve({code: 0});
-        }
+            },
+        });
+    } else {
+        await ci.addressChannels(slackErrorMessage(
+            `Error: No projects found with search term [${ci.parameters.projectSearch}]`,
+            `Please try this command again`,
+            ci.context,
+        ));
+        return {code: 0};
+    }
 
-        try {
-            await submitMappingPayload(
-                ci,
-                {
-                    channel: ci.parameters.slackChannelName,
-                    projectId: project.project,
-                },
-            );
+    try {
+        await submitMappingPayload(
+            ci,
+            {
+                channel: ci.parameters.slackChannelName,
+                projectId: project.project,
+            },
+        );
 
-            const projectDetails =
-                await getJiraDetails<Project>(`${jiraConfig.url}/rest/api/2/project/${project.project}`, true, undefined, ci);
-            const subject = `New JIRA Project mapping created successfully!`;
-            const message = `Added new mapping from Project *${projectDetails.name}* to *${ci.parameters.slackChannelName}*`;
+        const projectDetails =
+            await getJiraDetails<Project>(`${jiraConfig.url}/rest/api/2/project/${project.project}`, true, undefined, ci);
+        const subject = `New JIRA Project mapping created successfully!`;
+        const message = `Added new mapping from Project *${projectDetails.name}* to *${ci.parameters.slackChannelName}*`;
 
-            await ci.addressChannels(slackSuccessMessage(
-                subject,
-                message,
-            ));
+        await ci.addressChannels(slackSuccessMessage(
+            subject,
+            message,
+        ));
 
-            resolve({ code: 0 });
-        } catch (error) {
-            logger.error(`JIRA mapProjectToChannel: Error completing command => ${error}`);
-            reject({
-                code: 1,
-                message: error,
-            });
-        }
-
-        resolve({code: 0});
-    });
+        return { code: 0 };
+    } catch (error) {
+        logger.error(`JIRA mapProjectToChannel: Error completing command => ${error}`);
+        return {
+            code: 1,
+            message: error,
+        };
+    }
 }
 
 export const mapProjectToChannelReg: CommandHandlerRegistration<MapProjectToChannelParams> = {
