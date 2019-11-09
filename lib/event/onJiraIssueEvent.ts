@@ -24,7 +24,7 @@ import {
 import { EventHandlerRegistration } from "@atomist/sdm";
 import { purgeCacheEntry } from "../support/cache/manage";
 import { routeEvent } from "../support/routeEvent";
-import {buildSelfUrl} from "../support/shared";
+import { buildSelfUrl } from "../support/shared";
 import * as types from "../typings/types";
 
 /**
