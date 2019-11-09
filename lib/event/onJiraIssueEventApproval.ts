@@ -32,7 +32,7 @@ import {
 import { JiraConfig } from "../jira";
 import { getJiraDetails } from "../support/jiraDataLookup";
 import * as jiraTypes from "../support/jiraDefs";
-import {buildSelfUrl} from "../support/shared";
+import { buildSelfUrl } from "../support/shared";
 import * as types from "../typings/types";
 
 /**

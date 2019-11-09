@@ -32,7 +32,7 @@ import {
     getJiraIssueRepos,
 } from "../jiraDataLookup";
 import * as jiraTypes from "../jiraDefs";
-import {buildSelfUrl} from "../shared";
+import { buildSelfUrl } from "../shared";
 
 /**
  * Return all channels that are mapped to this project
