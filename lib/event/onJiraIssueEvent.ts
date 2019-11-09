@@ -24,6 +24,7 @@ import {
 import { EventHandlerRegistration } from "@atomist/sdm";
 import { purgeCacheEntry } from "../support/cache/manage";
 import { routeEvent } from "../support/routeEvent";
+import {buildSelfUrl} from "../support/shared";
 import * as types from "../typings/types";
 
 /**
@@ -47,7 +48,7 @@ function onJiraIssueEventHandler():
          * to make sure we retrieve the latest data per event.  Once we've retrieved the data for THIS event
          * we'll use the cached version
          */
-        await purgeCacheEntry(e.data.JiraIssue[0].issue.self + "?expand=changelog");
+        await purgeCacheEntry(buildSelfUrl(e.data.JiraIssue[0].issue.id) + "?expand=changelog");
 
         /**
          * Let's go collect all events for this Issue key and resubmit them to be processed
